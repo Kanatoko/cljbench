@@ -1,16 +1,8 @@
-(let
-  [ lines
-    (seq
-      (clojure.string/split-lines
-        (slurp "../data.csv" ))) ]
-  (dotimes [ n 10 ]
+(let [lines (clojure.string/split-lines
+             (slurp "../data.csv" ))]
+  (dotimes [n 10]
     (time
-      (print
-        (apply
-          max
-          (map
-            #(read-string
-              (nth
-                (clojure.string/split % #",")
-                0))
-            lines))))))
+     (print
+      (->> lines
+           (map #(Long/parseLong (nth (.split ^String % ",") 0)))
+           (reduce max))))))
